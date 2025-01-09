@@ -28,6 +28,10 @@ classifiers = [  #! Update me
 [tool.poetry.dependencies]
 python = "~3.10.0"
 python-dotenv = "^1.0.1"
+matplotlib = "^3.10.0"
+seaborn = "^0.13.2"
+ipywidgets = "^8.1.5"
+etna = "^2.10.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -82,6 +86,9 @@ ignore = [
   "D401",
   "RET504",
   "ISC001",
+  "PD901",
+  "S101",
+  "D100",
 ]
 
 exclude = [
@@ -102,6 +109,7 @@ convention = "numpy"
 "tests/*" = ["S", "D", "INP001"]
 "forecasting_sticker_sales/__init__.py" = ["D400", "D103"]
 "scripts/*" = ["BLE001", "D", "INP001"]
+"notebooks/*" = ["E402", "I001"]
 
 [tool.ruff.format]
 # Like Black, use double quotes for strings.
