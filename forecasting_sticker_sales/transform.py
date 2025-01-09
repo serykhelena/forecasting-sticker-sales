@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from etna.datasets.tsdataset import TSDataset
 
@@ -13,3 +14,17 @@ def convert_to_ts_df(df: pd.DataFrame) -> TSDataset:
     ts_df = TSDataset(ts_df, freq="D")
 
     return ts_df
+
+
+def convert_to_df(ts_df: TSDataset) -> pd.DataFrame:
+    """Convert TSDataset to pandas DataFrame."""
+    df = ts_df.to_pandas(flatten=True)
+    df = df.rename(columns={"timestamp": "date", "target": "num_sold"})
+    df["country"] = df["segment"].apply(lambda x: x.split("_")[0])
+    df["store"] = df["segment"].apply(lambda x: x.split("_")[1])
+    df["product"] = df["segment"].apply(lambda x: x.split("_")[2])
+
+    # round values after outlier processing
+    df["num_sold"] = np.ceil(df["num_sold"].values)
+
+    return df[["date", "country", "store", "product", "num_sold"]]

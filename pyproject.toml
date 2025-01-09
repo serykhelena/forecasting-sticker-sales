@@ -32,6 +32,7 @@ matplotlib = "^3.10.0"
 seaborn = "^0.13.2"
 ipywidgets = "^8.1.5"
 etna = "^2.10.0"
+prophet = "^1.1.6"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -109,7 +110,7 @@ convention = "numpy"
 "tests/*" = ["S", "D", "INP001"]
 "forecasting_sticker_sales/__init__.py" = ["D400", "D103"]
 "scripts/*" = ["BLE001", "D", "INP001"]
-"notebooks/*" = ["E402", "I001"]
+"notebooks/*" = ["E402", "I001", "T201"]
 
 [tool.ruff.format]
 # Like Black, use double quotes for strings.
