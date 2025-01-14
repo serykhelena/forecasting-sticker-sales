@@ -18,13 +18,20 @@ def create_dtime_features(df: pd.DataFrame) -> pd.DataFrame:
     """Create day-time features."""
     df_new = df.copy()
 
-    df_new["dayofmonth"] = df_new.index.hour.tolist()
     df_new["dayofweek"] = df_new.index.dayofweek.tolist()
+    df_new["cos_weekday"] = np.cos(df_new["dayofweek"] / 7 * 2 * np.pi)
+    df_new["sin_weekday"] = np.sin(df_new["dayofweek"] / 7 * 2 * np.pi)
+
+    df_new["is_leap_year"] = df_new.index.is_leap_year.tolist()
+    df_new["dayofyear"] = df_new.index.dayofyear.tolist()
+    df_new["cos_doy"] = np.cos(df_new["dayofyear"] / (365 + df_new["is_leap_year"]) * 2 * np.pi)
+    df_new["sin_doy"] = np.sin(df_new["dayofyear"] / (365 + df_new["is_leap_year"]) * 2 * np.pi)
+
+    df_new["dayofmonth"] = df_new.index.hour.tolist()
     df_new["quarter"] = df_new.index.quarter.tolist()
     df_new["year"] = df_new.index.year.tolist()
     df_new["month"] = df_new.index.month.tolist()
     df_new["day"] = df_new.index.day.tolist()
-    df_new["dayofyear"] = df_new.index.dayofyear.tolist()
     df_new["weekofyear"] = df_new.index.isocalendar().week.tolist()
 
     df_new["is_weekend"] = 0
