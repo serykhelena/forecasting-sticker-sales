@@ -35,6 +35,7 @@ etna = "^2.10.0"
 prophet = "^1.1.6"
 lightgbm = "^4.5.0"
 tqdm = "^4.67.1"
+requests = "^2.32.3"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -114,7 +115,7 @@ convention = "numpy"
 "tests/*" = ["S", "D", "INP001"]
 "forecasting_sticker_sales/__init__.py" = ["D400", "D103"]
 "scripts/*" = ["BLE001", "D", "INP001"]
-"notebooks/*" = ["E402", "I001", "T201", "D103"]
+"notebooks/*" = ["E402", "I001", "T201", "D103", "E501"]
 
 [tool.ruff.format]
 # Like Black, use double quotes for strings.

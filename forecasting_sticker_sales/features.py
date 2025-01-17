@@ -1,6 +1,38 @@
 import numpy as np
 import pandas as pd
+import requests
 from prophet.make_holidays import make_holidays_df
+
+
+def get_gdp_per_capita(alpha3, year):
+    """Get GDP data for the specified country and year."""
+    url = "https://api.worldbank.org/v2/country/{0}/indicator/NY.GDP.PCAP.CD?date={1}&format=json"
+    response = requests.get(url.format(alpha3, year)).json()  # noqa: S113
+    return response[1][0]["value"]
+
+
+def get_gdp_data() -> pd.DataFrame:
+    """Get GDP per country data."""
+    country_names = ["CAN", "FIN", "ITA", "KEN", "NOR", "SGP"]
+    countries = ["Canada", "Finland", "Italy", "Kenya", "Norway", "Singapore"]
+    years = list(map(str, range(2010, 2020)))
+
+    gdp_data = []
+    for country, country_code in zip(countries, country_names, strict=False):
+        for year in years:
+            country_year_gdp = get_gdp_per_capita(country_code, year)
+            gdp_data.append([country, year, country_year_gdp])
+
+    gdp_df = pd.DataFrame(gdp_data, columns=["country", "year", "gdp"])
+    gdp_df["year"] = pd.to_datetime(gdp_df["year"], format="%Y")
+
+    gdp_grouped = gdp_df.groupby("year", as_index=False)["gdp"].sum()
+    gdp_grouped = gdp_grouped.rename(columns={"gdp": "gdp_year_sum"})
+
+    gdp_df = gdp_df.merge(gdp_grouped, on="year", how="left")
+    gdp_df["ratio"] = gdp_df["gdp"] / gdp_df["gdp_year_sum"]
+
+    return gdp_df
 
 
 def get_holiday_df(country: str) -> pd.DataFrame:
